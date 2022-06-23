@@ -1,2 +1,2 @@
 #!/bin/bash
-chgrp greatyinkus group
+chgrp school group
