@@ -33,19 +33,15 @@ defaults
 	errorfile 503 /etc/haproxy/errors/503.http
 	errorfile 504 /etc/haproxy/errors/504.http
 
-frontend  ehoneah-frontend-http
+# start of parameters for www.greatyinkus.tech
+frontend myservers
         bind *:80
-        mode http
-	http-request set-header X-Forwarded-Proto http
-        default_backend ehoneah-backend
+        bind *:443 ssl crl /etc/haproxy/certs/www.greatyinkus.tech.pem
+        redirect scheme https code 301 if { hdr(Host) -i www.greatyinkus.tech } !{ ssl_fc }
+        default_backend myservers
 
-frontend ehoneah-frontend-https
-	bind *:443 ssl crt /etc/haproxy/certs/www.ehoneah.tech.pem
-	http-request set-header X-Forwarded-Proto https
-	http-request redirect scheme https code 301 unless { ssl_fc }
-	default_backend ehoneah-backend
-
-backend ehoneah-backend
+backend myservers
         balance roundrobin
-        server 63210-web-01 54.237.35.59:80 check
-        server 63210-web-02 54.90.3.239:80 check
+        server 74531-web-01 18.235.234.210:80 check
+        server 74531-web-02 100.27.3.210:80 check
+# end of parameters   
