@@ -33,22 +33,15 @@ defaults
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
 
-frontend www-http
-    bind   0.0.0.0:80
-    http-request set-header X-Forwarded-Proto http
-    default_backend www-backend
-frontend www-https
-    bind   0.0.0.0:443 ssl crt /etc/haproxy/certs/www.dev-sanctus.tech
-    http-request set-header X-Forwarded-Proto https
-    acl    letsencrypt-acl path_beg /.well-known/acme-challenge/
-    use_backend letsencrypt-backend if letsencrypt-acl
-    default_backend www-backend
+# start of parameters for www.greatyinkus.tech
+frontend myfrontend
+        bind *:80
+        bind *:443 ssl crt /etc/haproxy/certs/www.greatyinkus.tech.pem
+        http-request redirect scheme https code 301 if { hdr(Host) -i www.greatyinkus.tech } !{ ssl_fc }
+        default_backend myservers
 
-backend www-backend
-    balance  roundrobin
-    redirect scheme https if !{ ssl_fc }
-    server 84912-web-01 18.235.233.101 check
-    server 84912-web-02 54.160.82.163 check
-
-backend letsencrypt-backend
-    server letsencrypt 127.0.0.1:54321
+backend myservers
+        balance roundrobin
+        server 74531-web-01 18.235.234.210:80 check
+        server 74531-web-02 100.27.3.210:80 check
+# end of parameters
