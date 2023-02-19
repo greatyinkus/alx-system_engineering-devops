@@ -46,5 +46,5 @@ frontend greatyinkus-frontend-https
 
 backend greatyinkus-backend
         balance roundrobin
-        server 63210-web-01 18.235.234.210:80 check
-        server 63210-web-02 100.27.3.210:80 check
+        server 70550-web-01 18.235.234.210:80 check
+        server 70550-web-02 100.27.3.210:80 check
